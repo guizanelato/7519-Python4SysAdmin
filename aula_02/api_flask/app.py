@@ -1,6 +1,8 @@
 
 import pymongo
 import flask 
+import bson
+
 
 app = flask.Flask(__name__)
 
@@ -41,6 +43,39 @@ def delete_by_name(nome):
         })
 
     return flask.jsonify({'message': 'registro removido com sucesso'})
+
+@app.route('/documents/insert' , methods = ['POST'])
+def insert_user():
+    
+    doc = flask.request.json
+
+    collection.pessoa.insert(doc)
+
+    return flask.jsonify({'mensagem': 'usuário cadastrado com sucesso'})
+
+@app.route('/documents/update/<user_id>', methods = ['PUT' , 'PATCH'])
+def update_user_by_id(user_id):
+    user = {
+            '_id': bson.ObjectId(user_id)
+
+            }
+
+    collection.pessoa.update(user, {
+            '$set' : flask.request.json
+        })
+
+    user = collection.pessoa.find_one({
+            '_id': bson.ObjectId(user_id)
+        })
+
+    return flask.jsonify({
+            'id': str(user.get('_id')),
+            'nome': user.get('nome'),
+            'uf': user.get('UF'),
+            'idade': user.get('idade')
+        })
+
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
