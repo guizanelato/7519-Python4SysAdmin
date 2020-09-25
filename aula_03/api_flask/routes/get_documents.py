@@ -1,5 +1,5 @@
 
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, render_template
 import pymongo
 
 
@@ -21,4 +21,5 @@ def get_all_documents():
                 } for d in collection.pessoa.find() 
 
             ]
-    return jsonify(documentos)
+
+    return render_template('index.html', context=documentos)
