@@ -1,0 +1,24 @@
+upstream front {
+	server 200.100.50.10:8000;
+
+}
+
+upstream mongos {
+	server 200.100.50.20:8000;
+
+}
+
+
+server {
+	listen 80;
+
+	location /app1/{
+		proxy_pass http://front/;
+	
+	}
+
+	location /mongo_service/{
+		proxy_pass http://mongos/;
+	}
+
+}

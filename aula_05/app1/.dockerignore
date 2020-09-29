@@ -1,0 +1,6 @@
+# ambiente virtual do python
+env/
+
+#dockerfile da aplicacao
+Dockerfile
+

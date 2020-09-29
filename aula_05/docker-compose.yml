@@ -1,0 +1,45 @@
+version: '3'
+services:
+   nginx:
+     image: 'nginx'
+     ports:
+       - "80:80"
+     networks:
+         base_network:
+             ipv4_address: 200.100.50.5
+     depends_on:
+         - python-1
+         - python-2
+         - mongodb 
+
+   python-1:
+     image: 'app1'
+     networks:
+         base_network:
+             ipv4_address: 200.100.50.10
+   python-2:
+     image: 'app2'
+     networks:
+         base_network:
+             ipv4_address: 200.100.50.20
+
+   mongodb:
+     image: 'mongo'
+     volumes:
+         - type: volume
+           source: mongodb_data
+           target: /data/db
+     networks:
+        base_network:
+            ipv4_address: 200.100.50.17
+
+volumes:
+    mongodb_data:
+
+
+networks:
+    base_network:
+        ipam:
+            driver: default
+            config:
+                - subnet: "200.100.50.0/24"

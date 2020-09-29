@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Python 4 SysAdmin{% endblock %}
+
+{% block main %} 
+	
+	<p> Meu primeiro template com o Jinja2 </p>
+	
+		<table class="table">
+		  <thead class="thead-dark">
+			<tr>
+			  <th scope="col">ID</th>
+			  <th scope="col">Nome</th>
+			  <th scope="col">Idade</th>
+			  <th scope="col">UF</th>
+			</tr>
+		  </thead>
+		  <tbody>
+	
+		{% for registro in context %}
+			<!-- registros da tabela  -->
+				<tr>
+				  <th scope="row">{{ registro.id }} </th>
+				  <td>{{ registro.nome }}</td>
+				  <td>{{ registro.idade }}</td>
+				  <td>{{ registro.uf}}</td>
+				</tr>
+		{% endfor  %}
+
+		  </tbody>
+	     </table>
+
+{% endblock %}
+
