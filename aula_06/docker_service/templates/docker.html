@@ -1,0 +1,45 @@
+{% extends "base.html"  %}
+
+
+{% block title %} Docker {% endblock %}
+
+{% block main %}
+
+
+<div class="card shadow">
+   <div class="card-header">
+       <h1 align="center">Docker</h1>
+   </div>
+   <div class = "card-body">
+       <table class="table table-striped">
+           <thead>
+               <tr>
+	           <th scope="col">ID</th>
+		   <th scope="col">Imagem</th>
+		   <th scope="col">Status</th>
+		   <th scope="col">Ações</th>
+              </tr>
+           </thead>
+	   <tbody>
+	    {% for container in context  %}
+	    <tr>
+	      <th scope="row"> {{ container.id  }}</th>
+	      <td> {{ container.imagem  }}</td>
+	      <td> {{ container.status }}</td>
+	      <td>
+		<a href="/docker/{{ container.id }}/start">
+		 <span>start</span>
+	        </a>
+		<a href="/docker/{{ container.id  }}/stop">
+		 <span>stop</span>
+	        </a>
+	      </td>
+	    </tr>
+	    {% endfor  %}
+           </tbody>
+        </table>
+  </div> 
+
+{% endblock %}
+
+
