@@ -1,0 +1,29 @@
+version: '3.0'
+services:
+  gitea:
+    image: 'gitea/gitea:1.11.3'
+    hostname: 'gitea.example.com'
+    volumes:
+    - 'gitea_data:/data'
+    networks:
+      developer:
+        ipv4_address: '200.100.50.10'
+  jenkins:
+    image: 'jenkins/jenkins:lts-alpine'
+    hostname: 'jenkins.example.com'
+    volumes:
+      - 'jenkins_data:/var/jenkins_home'
+    networks:
+      developer:
+        ipv4_address : '200.100.50.20'
+  
+volumes:
+   jenkins_data: {}
+   gitea_data: {}
+
+networks:
+   developer:
+     driver: bridge
+     ipam:
+       config:
+         - subnet: '200.100.50.0/24'

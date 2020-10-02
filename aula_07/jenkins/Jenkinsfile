@@ -1,0 +1,28 @@
+node {
+    def remote =[:]
+    remote.name = 'vm-developer'
+    remote.host = '192.168.0.250'
+    remote.user = 'developer'
+    remote.password = '4linux'
+    remote.allowAnyHosts = true
+    
+    stage('checkout-gitea'){
+        //realizar o clone do repositório
+        sshCommand remote: remote, command: "git clone http://200.100.50.10:3000/developer/app.git"       
+    }
+    stage('build container'){
+        // a partir do repositório, criar o container
+        sshCommand remote: remote, command: "docker build -t pyapp app/"
+        sshCommand remote: remote, command: "docker run -d --name pyapp --network=aula_07_developer --ip=200.100.50.90 pyapp "
+    }
+    stage('test app'){
+        //executar os testes unitários
+        sshCommand remote: remote, command: "sleep 5 && curl 200.100.50.90:8000"
+    }    
+    stage('post actions'){
+        // limpeza do ambiente
+        sshCommand remote: remote, command: "docker container stop pyapp && docker container rm pyapp"
+        sshCommand remote: remote, command: "rm -rf app/"
+    }
+    
+}
