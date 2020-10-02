@@ -1,0 +1,53 @@
+pipeline{
+    agent {
+       label "vm-developer" 
+    }
+    
+    environment {
+        registry = "guizanelato/pytest"
+        registryCredentials = 'docker_registry'
+    }
+    
+    ///home/developer/jenkins
+    
+    stages{
+     stage('checkout scm'){
+         steps{
+             cleanWs()
+             git "http://200.100.50.10:3000/developer/app.git"
+         }
+     }
+     stage('build docker image'){
+         steps{
+             script{
+                 image = docker.build(registry + ":$BUILD_NUMBER")
+             }
+         }
+     }
+     stage('test app'){
+         steps{
+             script{
+                image.inside("--name pyapp --network=aula_07_developer --ip=200.100.50.90"){
+                    sh "python -m unittest tests/test_route_root.py"
+                }  
+            }
+        }
+     }
+     stage('image registry deploy'){
+        steps{
+            script{
+                docker.withRegistry("", registryCredentials){
+                    image.push()
+                }
+            }
+        }
+     }
+        
+    }
+    
+    post{
+        cleanup{
+            sh "docker image rmi $registry:$BUILD_NUMBER "
+        }
+    }
+}
