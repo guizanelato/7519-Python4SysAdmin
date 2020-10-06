@@ -1,11 +1,12 @@
 
 from flask import Flask, redirect
 
-from routes.jenkins_ import blueprint as jenkins
+from routes.docker_ import blueprint as docker
 
 app = Flask(__name__)
 
-app.register_blueprint(jenkins)
+app.register_blueprint(docker)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

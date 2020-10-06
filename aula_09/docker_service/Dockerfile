@@ -1,7 +1,7 @@
 # build #1
 
 # definição de uma imagem leve, e adicionado um apelido
-FROM python:3-buster as base
+FROM python:3-alpine as base
 
 # criação de um diretórios
 RUN mkdir /install

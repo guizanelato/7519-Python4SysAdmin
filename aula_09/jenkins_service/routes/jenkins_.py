@@ -8,7 +8,7 @@ blueprint = Blueprint('jenkins', __name__)
 # verificar uso de variáveis de ambiente
 JENKINS_OPTS = {
         
-    'url': 'http://200.100.50.20:8080',
+    'url': 'http://200.100.50.40:8080',
     'username': 'developer',
     'password': '4Linux@'
         
@@ -50,7 +50,7 @@ def get_node_status(status):
     else:
         return 'Offline'
 
-@blueprint.route('/jenkins', methods = ['GET'])
+@blueprint.route('/', methods = ['GET'])
 def jenkins_page():
 
     context = {
@@ -60,12 +60,12 @@ def jenkins_page():
     
     return render_template('jenkins.html', context=context)
 
-@blueprint.route('/jenkins/<jobname>/run', methods = ['GET'])
+@blueprint.route('/<jobname>/run', methods = ['GET'])
 def job_run(jobname):
     client = jenkins_client(JENKINS_OPTS)
     client.build_job(jobname)
 
-    return redirect('/jenkins')
+    return redirect('/')
     
 
 

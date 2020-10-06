@@ -1,0 +1,44 @@
+upstream gitea_service {
+	server 200.100.50.10:8000;
+
+}
+
+upstream session {
+	server 200.100.50.20:8000;
+
+}
+
+upstream docker_service {
+	server 200.100.50.60:8000;
+
+}
+
+upstream jenkins_service{
+	server 200.100.50.50:8000;
+
+}
+
+
+server {
+	listen 80;
+
+	location /service/gitea{
+		proxy_pass http://gitea_service/;
+	
+	}
+	
+	location /service/jenkins{
+		proxy_pass http://jenkins_service/;
+	
+	}
+	
+	location /service/docker{
+		proxy_pass http://docker_service/;
+	
+	}
+
+	location /session{
+		proxy_pass http://session/;
+	}
+
+}

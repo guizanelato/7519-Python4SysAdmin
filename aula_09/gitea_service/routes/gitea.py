@@ -2,12 +2,23 @@
 from os import environ
 
 import requests 
+import functools
+
 from flask import Blueprint, render_template, jsonify, redirect,  request, session
+
+
+def login_required(function):
+    @functools.wraps(function)
+    def wrapper(*args, **kwargs):
+        if not session.get('auth'):
+            return redirect('http://example.com/session')
+        return function(*args, **kwargs)
+    return wrapper
 
 blueprint = Blueprint('gitea', __name__) 
 
 GITEA_TOKEN = environ['GITEA_TOKEN']
-GITEA_URL = 'http://200.100.50.10:3000/api/v1'
+GITEA_URL = 'http://200.100.50.30:3000/api/v1'
 
 endpoints = {
         'users': f'{GITEA_URL}/admin/users',
@@ -21,7 +32,8 @@ headers = {
 
 
 
-@blueprint.route('/gitea', methods = ['GET'])
+@blueprint.route('/', methods = ['GET'])
+@login_required
 def gitea_page():
     #1: pegar usuários
     
@@ -30,7 +42,7 @@ def gitea_page():
         response.raise_for_status()
     except requests.exceptions.HTTPError as err:
         #log
-        return jsonify({'mensagem': 'Não foi possível estabelecer conexão com o Gitea'})
+        return jsonify({'mensagem': f'Não foi possível estabelecer conexão com o Gitea {err}'})
     else:
         users =[{
             'login': user['login'],
@@ -91,12 +103,12 @@ def add_user():
                     endpoints['users'], headers=headers, json=context)
     
         response.raise_for_status()
-    except requests.exceptios.HTTPError as err:
+    except requests.exceptions.HTTPError as err:
         return jsonify({'mensagem':'Erro ao processar a requisição no Gitea'})
     else:
     
         #4: renderizar a página padrão
-        return redirect('/gitea')
+        return redirect('/')
 
 
 @blueprint.route('/sign-in')

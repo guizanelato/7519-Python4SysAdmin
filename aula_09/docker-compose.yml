@@ -1,29 +1,73 @@
 version: '3'
 services:
-  python-1:
+  nginx:
+    image: "guizanelato/nginx"
+    ports:
+      - "80:80"
+    networks:
+        novarede:
+            ipv4_address: 200.100.50.5
+
+  gitea_service:
     image: "guizanelato/gitea_service"
     networks:
         novarede:
             ipv4_address: 200.100.50.10
     environment:
-      - GITEA_TOKEN=GITEA_TOKEN
+      - GITEA_TOKEN=2b7e5cde1a252ef3105da3060dca79b250197cb7
 
-  python-2:
+  jenkins_service:
+    image: "guizanelato/jenkins_service"
+    networks:
+        novarede:
+            ipv4_address: 200.100.50.50
+
+  docker_service:
+    image: "guizanelato/docker_service"
+    networks:
+        novarede:
+            ipv4_address: 200.100.50.60
+        
+  session:
     image: "guizanelato/session"
     networks:
         novarede:
             ipv4_address: 200.100.50.20
+  gitea:
+    image: 'gitea/gitea:1.11.3'
+    hostname: 'gitea.example.com'
+    volumes:
+    - 'gitea_data:/data'
+    networks:
+      novarede:
+        ipv4_address: 200.100.50.30
+  
+  jenkins:
+    image: 'jenkins/jenkins:lts-alpine'
+    hostname: 'jenkins.example.com'
+    volumes:
+      - 'jenkins_data:/var/jenkins_home'
+    networks:
+      novarede:
+        ipv4_address : 200.100.50.40
+  
 
   redis:
     image: redis
-    command: redis-server --requirepass Redis2020!
+    command: redis-server --requirepass Redis2019!
     ports:
       - "6379:6379"
-    sysctls:
-      - net.core.somaxconn=511
     networks:
         novarede:
             ipv4_address: 200.100.50.90
+
+volumes:
+   jenkins_data:
+           external: true
+           name: aula_07_jenkins_data 
+   gitea_data:
+           external: true
+           name: aula_07_gitea_data
 
 networks:
    novarede:

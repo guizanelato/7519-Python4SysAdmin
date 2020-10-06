@@ -9,13 +9,12 @@ from flask_session import Session
 
 app = Flask(__name__)
 SESSION_TYPE = 'redis'
-SESSION_REDIS = Redis(host='200.100.50.90', port=6379, password='Redis2020!')
+SESSION_REDIS = Redis(host='200.100.50.90', port=6379, password='Redis2019!')
 
 app.config.from_object(__name__)
 Session(app)
 
 app.secret_key =  'secret'
-
 
 
 def login_required(function):
@@ -36,13 +35,10 @@ def home():
 def area_logada():
         return jsonify({'app-secret_key': app.secret_key })
 
-
 @app.route('/sign-in', methods=['GET'])
 def sign_in():
-    # lógica de validação 
-    
     session['auth'] = True
-    return redirect('http://200.100.50.10:8000/')
+    return redirect('http://example.com/service/gitea')
 
 
 @app.route('/sign-out', methods=['GET'])
