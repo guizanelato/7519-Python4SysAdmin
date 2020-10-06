@@ -1,0 +1,74 @@
+{% extends "base.html"  %}
+
+
+{% block title %} Gitea {% endblock %}
+
+{% block main %}
+
+
+<div class="card shadow">
+   <div class="card-header">
+       <h3 align="center">Gitea</h3>
+   </div>
+   <div class = "card-body">
+	<section id="users">
+	<header>
+	  <h3>Users</h3>
+	</header>
+         <table class="table table-striped">
+           <thead>
+               <tr>
+	           <th scope="col">Login</th>
+		   <th scope="col">Email</th>
+		   <th scope="col">Admin</th>
+		   <th> <button id="addRowBtn" onclick="addRow()" class="btn btn-secondary btn-sm ">add</button> <th>
+              </tr>
+           </thead>
+	   <tbody id="users" >
+           {% for user in context.users %}
+	   <tr>
+	      <td scope="row"> {{ user.login }}  </td>
+	      <td scope="row"> {{ user.email }}  </td>
+	      <td scope="row"> {{ user.admin }}</td>
+	      <td scope="row"> - </td>
+	   </tr>
+	   {% endfor %}
+           </tbody>
+        </table>
+     </section>
+     <section id="projects"> 
+	<header>
+	  <h3>Projetos</h3>
+	</header>
+	<table class="table table-striped">
+	 <thead>
+	   <tr>
+		<th>ID</th>
+		<th>Owner</th>
+		<th>Nome</th>
+		<th>ssh_url</th>
+	   </tr>
+	   <thead>
+	   <tbody>
+           {% for project in context.projects %}
+	    <tr>
+	    	<td> {{ project.id }} </th>
+		<td> {{ project.owner }} </td>
+		<td> {{ project.nome }}</td>
+		<td> {{ project.ssh_url }} </td>
+	    </tr>
+	   {% endfor %}
+           </tbody>
+        </table>
+     </section>
+		
+  </div> 
+
+{% endblock %}
+
+
+{% block javascript %}
+<script src="static/js/gitea.js">
+</script>
+{% endblock %}
+

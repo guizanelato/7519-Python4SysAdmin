@@ -1,0 +1,33 @@
+version: '3'
+services:
+  python-1:
+    image: "guizanelato/gitea_service"
+    networks:
+        novarede:
+            ipv4_address: 200.100.50.10
+    environment:
+      - GITEA_TOKEN=GITEA_TOKEN
+
+  python-2:
+    image: "guizanelato/session"
+    networks:
+        novarede:
+            ipv4_address: 200.100.50.20
+
+  redis:
+    image: redis
+    command: redis-server --requirepass Redis2020!
+    ports:
+      - "6379:6379"
+    sysctls:
+      - net.core.somaxconn=511
+    networks:
+        novarede:
+            ipv4_address: 200.100.50.90
+
+networks:
+   novarede:
+     driver: bridge
+     ipam:
+       config:
+         - subnet: '200.100.50.0/24'

@@ -1,0 +1,1 @@
+export GITEA_TOKEN=b4a4e40fae1f72cd34122213fefb6d9ea323e3c8

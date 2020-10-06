@@ -1,0 +1,66 @@
+{% extends "base.html"  %}
+
+
+{% block title %} Jenkins {% endblock %}
+
+{% block main %}
+
+
+<div class="card shadow">
+   <div class="card-header">
+       <h3 align="center">Jenkins</h3>
+   </div>
+   <div class = "card-body">
+	<section id="jobs">
+	<header>
+	  <h3>Jobs</h3>
+	</header>
+         <table class="table table-striped">
+           <thead>
+               <tr>
+	           <th scope="col">Job</th>
+		   <th scope="col">URL</th>
+		   <th scope="col">Status</th>
+		   <th scope="col">Ações </th>
+              </tr>
+           </thead>
+	   <tbody >
+	  
+	   {% for job in  context.jobs %}   
+		   <tr>
+			   <td scope="row"> {{ job.job  }}  </td>
+			   <td scope="row"> {{ job.url }} </td>
+			   <td scope="row"> {{ job.status }} </td>
+			   <td scope="row"> <a href="/jenkins/{{job.job}}/run">run</a></td>
+		   </tr>
+	   {% endfor %}
+           </tbody>
+        </table>
+     </section>
+     <section id="Nodes"> 
+	<header>
+	  <h3>Nodes</h3>
+	</header>
+	<table class="table table-striped">
+	 <thead>
+	   <tr>
+		<th>Node</th>
+		<th>Status</th>
+	   </tr>
+	   <thead>
+	   <tbody>
+       	   {% for node in context.nodes %} 
+	    <tr>
+		    <td>  {{ node.node }} </th>
+		    <td>  {{ node.status }} </td>
+	    </tr>
+	   {% endfor %}
+           </tbody>
+        </table>
+     </section>
+		
+  </div> 
+
+{% endblock %}
+
+
