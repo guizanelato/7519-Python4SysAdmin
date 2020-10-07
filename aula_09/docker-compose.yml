@@ -28,6 +28,11 @@ services:
         novarede:
             ipv4_address: 200.100.50.60
         
+  auth_service:
+    image: "guizanelato/auth_service"
+    networks:
+        novarede:
+            ipv4_address: 200.100.50.70
   session:
     image: "guizanelato/session"
     networks:
@@ -60,6 +65,19 @@ services:
     networks:
         novarede:
             ipv4_address: 200.100.50.90
+
+  openldap:
+    image: osixia/openldap
+    ports:
+        - 389:389
+        - 636:636
+    environment:
+        - LDAP_DOMAIN=example.com.br
+        - LDAP_ADMIN_PASSWORD=4linux
+    networks:
+        novarede:
+            ipv4_address: 200.100.50.80
+
 
 volumes:
    jenkins_data:

@@ -8,6 +8,11 @@ upstream session {
 
 }
 
+upstream auth_service{
+	server 200.100.50.70:8000;
+
+}
+
 upstream docker_service {
 	server 200.100.50.60:8000;
 
@@ -39,6 +44,10 @@ server {
 
 	location /session{
 		proxy_pass http://session/;
+	}
+
+	location /{
+		proxy_pass http://auth_service/;
 	}
 
 }
